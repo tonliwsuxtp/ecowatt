@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useOutletContext } from 'react-router-dom'
 import ReactApexChart from 'react-apexcharts'
 import type { ApexOptions } from 'apexcharts'
-import type { OutletCtx } from '../layout/Layout'
-import { MenuSVG } from '../shared/Icons'
-import { TrendSVG, RemoteSVG, BarSVG, BellSVG, WheelchairSVG } from '../icon'
+import { fetchDashboard, type DashboardData } from '../../api/mockApi'
+import { LoadingSpinner, ErrorState } from '../shared/LoadingSpinner'
 
-// ---- Responsive hook ----
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
   useEffect(() => {
@@ -17,7 +14,6 @@ function useIsMobile() {
   return isMobile
 }
 
-// ---- Radialbar ----
 function CircularProgress({ percent, colors, label }: {
   percent: number; colors: [string, string]; label: string
 }) {
@@ -48,18 +44,17 @@ function CircularProgress({ percent, colors, label }: {
   }
 
   return (
-    <div className="progress-item">
+    <div className="flex flex-col items-center gap-[10px]">
       <ReactApexChart type="radialBar" series={[percent]} options={options} height={size} width={size} />
-      <p className="progress-desc">{label}</p>
+      <p className="text-sm text-[#3a5a7a] text-center">{label}</p>
     </div>
   )
 }
 
-// ---- Weekly Bar Chart ----
-function WeeklyBarChart() {
+function WeeklyBarChart({ data }: { data: number[] }) {
   const options: ApexOptions = {
     chart: { type: 'bar', toolbar: { show: false } },
-    plotOptions: { bar: {  columnWidth: '55%' } },
+    plotOptions: { bar: { columnWidth: '55%' } },
     dataLabels: { enabled: false },
     xaxis: { categories: ['จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'], labels: { style: { colors: '#888', fontSize: '12px' } } },
     yaxis: { labels: { style: { colors: '#888', fontSize: '11px' } } },
@@ -67,11 +62,10 @@ function WeeklyBarChart() {
     grid: { borderColor: '#f0f4f8', strokeDashArray: 4 },
     tooltip: { y: { formatter: v => `${v} kWh` } },
   }
-  return <ReactApexChart type="bar" series={[{ name: 'การใช้ไฟ', data: [30, 45, 28, 60, 42, 55, 38] }]} options={options} height={220} width="100%" />
+  return <ReactApexChart type="bar" series={[{ name: 'การใช้ไฟ', data }]} options={options} height={220} width="100%" />
 }
 
-// ---- Device Donut Chart ----
-function DeviceDonutChart() {
+function DeviceDonutChart({ active, total }: { active: number; total: number }) {
   const options: ApexOptions = {
     chart: { type: 'donut' },
     labels: ['เปิดอยู่', 'ปิดอยู่'],
@@ -82,7 +76,7 @@ function DeviceDonutChart() {
           size: '68%',
           labels: {
             show: true,
-            total: { show: true, label: 'อุปกรณ์', fontSize: '13px', color: '#888', formatter: () => '4 / 6' },
+            total: { show: true, label: 'อุปกรณ์', fontSize: '13px', color: '#888', formatter: () => `${active} / ${total}` },
             value: { fontSize: '22px', fontWeight: '700', color: '#1a2a4a' },
           },
         },
@@ -90,22 +84,16 @@ function DeviceDonutChart() {
     },
     fill: {
       type: ['gradient', 'solid'],
-      gradient: {
-        shade: 'dark',
-        type: 'horizontal',
-        gradientToColors: ['#87D4F9'],
-        stops: [0, 100],
-      },
+      gradient: { shade: 'dark', type: 'horizontal', gradientToColors: ['#87D4F9'], stops: [0, 100] },
     },
     dataLabels: { enabled: false },
     legend: { position: 'bottom', fontSize: '13px' },
     stroke: { width: 0 },
   }
-  return <ReactApexChart type="donut" series={[4, 2]} options={options} height={220} width="100%" />
+  return <ReactApexChart type="donut" series={[active, total - active]} options={options} height={220} width="100%" />
 }
 
-// ---- Monthly Area Chart ----
-function MonthlyAreaChart() {
+function MonthlyAreaChart({ data }: { data: number[] }) {
   const options: ApexOptions = {
     chart: { type: 'area', toolbar: { show: false } },
     dataLabels: { enabled: false },
@@ -117,11 +105,10 @@ function MonthlyAreaChart() {
     grid: { borderColor: '#f0f4f8', strokeDashArray: 4 },
     tooltip: { y: { formatter: v => `${v} kWh` } },
   }
-  return <ReactApexChart type="area" series={[{ name: 'kWh', data: [380, 420, 360, 410, 240] }]} options={options} height={220} width="100%" />
+  return <ReactApexChart type="area" series={[{ name: 'kWh', data }]} options={options} height={220} width="100%" />
 }
 
-// ---- Alert Bar Chart ----
-function AlertBarChart() {
+function AlertBarChart({ data }: { data: number[] }) {
   const options: ApexOptions = {
     chart: { type: 'bar', toolbar: { show: false } },
     plotOptions: { bar: { columnWidth: '50%' } },
@@ -132,66 +119,80 @@ function AlertBarChart() {
     grid: { borderColor: '#f0f4f8', strokeDashArray: 4 },
     tooltip: { y: { formatter: v => `${v} ครั้ง` } },
   }
-  return <ReactApexChart type="bar" series={[{ name: 'แจ้งเตือน', data: [2, 0, 3, 1, 4, 1, 2] }]} options={options} height={220} width="100%" />
+  return <ReactApexChart type="bar" series={[{ name: 'แจ้งเตือน', data }]} options={options} height={220} width="100%" />
 }
 
 export default function HomePage() {
+  const [data, setData]       = useState<DashboardData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError]     = useState<string | null>(null)
 
+  const load = () => {
+    setLoading(true)
+    setError(null)
+    fetchDashboard()
+      .then(res => { setData(res); setLoading(false) })
+      .catch(() => { setError('โหลดข้อมูล Dashboard ไม่สำเร็จ'); setLoading(false) })
+  }
+
+  useEffect(() => { load() }, [])
 
   return (
-    <div className="screen">
-      
-      <div className="card dashboard-card">
+    <div className="max-w-[1150px] mx-auto pt-12 px-[18px] pb-8 md:pt-9 md:px-5 md:pb-5 flex flex-col gap-5">
 
-        <div className="progress-row">
-          <CircularProgress percent={24} colors={['#4A9EE8', '#87D4F9']} label="วันนี้ใช้ไฟแล้ว" />
-          <CircularProgress percent={56} colors={['#5BC4B5', '#A8E6D9']} label="เดือนนี้ใช้ไฟแล้ว" />
-        </div>
+      <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] flex flex-col gap-6">
 
-        <div className="dashboard-divider" />
+        {loading && <LoadingSpinner />}
+        {error   && <ErrorState message={error} onRetry={load} />}
 
-        <div className="stats-grid">
-          {[
-            { label: 'วันนี้',     value: '2.4 kWh', sub: '฿ 8.40',          color: '#4A9EE8' },
-            { label: 'เดือนนี้',   value: '68 kWh',  sub: '฿ 238.00',        color: '#5BC4B5' },
-            { label: 'เฉลี่ย/วัน', value: '3.2 kWh', sub: '฿ 11.20',         color: '#F0954A' },
-            { label: 'ประหยัดได้', value: '15%',     sub: 'vs เดือนที่แล้ว', color: '#5BC45B' },
-          ].map(s => (
-            <div key={s.label} className="stat-card">
-              <p className="stat-label">{s.label}</p>
-              <p className="stat-value" style={{ color: s.color }}>{s.value}</p>
-              <p className="stat-sub">{s.sub}</p>
+        {data && <>
+          {/* Circular progress */}
+          <div className="flex justify-around md:justify-center gap-4 md:gap-16 items-start py-2">
+            <CircularProgress percent={data.dailyPct}   colors={['#4A9EE8', '#87D4F9']} label="วันนี้ใช้ไฟแล้ว" />
+            <CircularProgress percent={data.monthlyPct} colors={['#5BC4B5', '#A8E6D9']} label="เดือนนี้ใช้ไฟแล้ว" />
+          </div>
+
+          <hr className="border-0 border-t border-[#f0f4f8]" />
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {data.stats.map(s => (
+              <div key={s.label} className="text-center py-4 px-2 bg-[#f8fbff] rounded-xl">
+                <p className="text-xs text-[#888] mb-1">{s.label}</p>
+                <p className="text-[22px] font-bold" style={{ color: s.color }}>{s.value}</p>
+                <p className="text-[11px] text-[#aaa] mt-0.5">{s.sub}</p>
+              </div>
+            ))}
+          </div>
+
+          <hr className="border-0 border-t border-[#f0f4f8]" />
+
+          {/* Charts Row 1 */}
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            <div className="min-w-0 pb-5 border-b border-[#f0f4f8] md:pb-0 md:pr-4 md:border-b-0 md:border-r md:border-[#f0f4f8]">
+              <p className="text-[15px] font-bold text-[#1a2a4a] mb-1">📊 การใช้ไฟรายสัปดาห์</p>
+              <WeeklyBarChart data={data.weeklyKwh} />
             </div>
-          ))}
-        </div>
-
-        <div className="dashboard-divider" />
-
-        {/* Charts Row 1 */}
-        <div className="dashboard-row">
-          <div className="dashboard-col">
-            <p className="dashboard-chart-title">📊 การใช้ไฟรายสัปดาห์</p>
-            <WeeklyBarChart />
+            <div className="min-w-0 pt-5 md:pt-0 md:pl-4">
+              <p className="text-[15px] font-bold text-[#1a2a4a] mb-1">🎮 สถานะอุปกรณ์</p>
+              <DeviceDonutChart active={data.deviceActive} total={data.deviceTotal} />
+            </div>
           </div>
-          <div className="dashboard-col">
-            <p className="dashboard-chart-title">🎮 สถานะอุปกรณ์</p>
-            <DeviceDonutChart />
-          </div>
-        </div>
 
-        <div className="dashboard-divider" />
+          <hr className="border-0 border-t border-[#f0f4f8]" />
 
-        {/* Charts Row 2 */}
-        <div className="dashboard-row">
-          <div className="dashboard-col">
-            <p className="dashboard-chart-title">📋 แนวโน้มรายเดือน</p>
-            <MonthlyAreaChart />
+          {/* Charts Row 2 */}
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            <div className="min-w-0 pb-5 border-b border-[#f0f4f8] md:pb-0 md:pr-4 md:border-b-0 md:border-r md:border-[#f0f4f8]">
+              <p className="text-[15px] font-bold text-[#1a2a4a] mb-1">📋 แนวโน้มรายเดือน</p>
+              <MonthlyAreaChart data={data.monthlyTrend} />
+            </div>
+            <div className="min-w-0 pt-5 md:pt-0 md:pl-4">
+              <p className="text-[15px] font-bold text-[#1a2a4a] mb-1">🔔 การแจ้งเตือนรายสัปดาห์</p>
+              <AlertBarChart data={data.weeklyAlerts} />
+            </div>
           </div>
-          <div className="dashboard-col">
-            <p className="dashboard-chart-title">🔔 การแจ้งเตือนรายสัปดาห์</p>
-            <AlertBarChart />
-          </div>
-        </div>
+        </>}
 
       </div>
     </div>

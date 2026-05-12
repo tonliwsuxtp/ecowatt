@@ -22,74 +22,52 @@ export default function AnalysisResultPage() {
   const isInRange = monthlyBudget >= estimatedCost * 0.9
 
   return (
-    <div className="screen">
+    <div className="max-w-[1150px] mx-auto pt-12 px-[18px] pb-8 md:pt-9 md:px-5 md:pb-5 flex flex-col gap-5">
       <PageHeader title="สรุปผลการวิเคราะห์ไฟฟ้า" showBack />
 
-      <div className="card">
-        <p style={{ color: '#666', fontSize: 14, marginBottom: 6 }}>การใช้ไฟฟ้าที่เหมาะสมต่อวัน</p>
-        <p style={{ fontSize: 32, fontWeight: 700, color: '#1a2a4a' }}>
+      <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+        <p className="text-[#666] text-sm mb-1.5">การใช้ไฟฟ้าที่เหมาะสมต่อวัน</p>
+        <p className="text-[32px] font-bold text-[#1a2a4a]">
           {dailyKwh.toFixed(1)}{' '}
-          <span style={{ fontSize: 16, fontWeight: 400, color: '#888' }}>kWh</span>
+          <span className="text-base font-normal text-[#888]">kWh</span>
         </p>
       </div>
 
-      <div className="card">
-        <p style={{ color: '#666', fontSize: 14, marginBottom: 6 }}>การใช้ไฟฟ้าที่เหมาะสมต่อเดือน</p>
-        <p style={{ fontSize: 32, fontWeight: 700, color: '#1a2a4a' }}>
+      <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+        <p className="text-[#666] text-sm mb-1.5">การใช้ไฟฟ้าที่เหมาะสมต่อเดือน</p>
+        <p className="text-[32px] font-bold text-[#1a2a4a]">
           {monthlyKwh}{' '}
-          <span style={{ fontSize: 16, fontWeight: 400, color: '#888' }}>kWh</span>
+          <span className="text-base font-normal text-[#888]">kWh</span>
         </p>
       </div>
 
-      <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <p style={{ color: '#666', fontSize: 14 }}>ค่าไฟเป้าหมายของคุณ</p>
-        <p style={{ fontSize: 32, fontWeight: 700, color: '#1a2a4a' }}>
+      <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] flex flex-col gap-3">
+        <p className="text-[#666] text-sm">ค่าไฟเป้าหมายของคุณ</p>
+        <p className="text-[32px] font-bold text-[#1a2a4a]">
           {monthlyBudget > 0 ? monthlyBudget.toLocaleString() : estimatedCost.toLocaleString()}{' '}
-          <span style={{ fontSize: 16, fontWeight: 400, color: '#888' }}>บาท/เดือน</span>
+          <span className="text-base font-normal text-[#888]">บาท/เดือน</span>
         </p>
-        <div style={{
-          padding: '10px 16px',
-          borderRadius: 8,
-          background: isInRange ? 'linear-gradient(135deg, #4A9EE8, #5BC4B5)' : 'linear-gradient(135deg, #F0954A, #E05A5A)',
-          color: 'white',
-          fontWeight: 600,
-          fontSize: 15,
-          textAlign: 'center',
-        }}>
+        <div
+          className={`px-4 py-[10px] rounded-lg text-white font-semibold text-[15px] text-center ${
+            isInRange
+              ? 'bg-gradient-to-br from-[#4A9EE8] to-[#5BC4B5]'
+              : 'bg-gradient-to-br from-[#F0954A] to-[#E05A5A]'
+          }`}
+        >
           {isInRange ? 'อยู่ในเกณฑ์ที่เหมาะสม' : 'สูงกว่าเกณฑ์ที่เหมาะสม'}
         </div>
       </div>
 
       <button
         onClick={() => navigate('/analysis/advice')}
-        style={{
-          width: '100%',
-          padding: '16px',
-          borderRadius: 12,
-          border: 'none',
-          background: 'linear-gradient(135deg, #4A9EE8, #5BC4B5)',
-          color: 'white',
-          fontSize: 16,
-          fontWeight: 700,
-          cursor: 'pointer',
-        }}
+        className="w-full py-4 rounded-xl border-none bg-gradient-to-br from-[#4A9EE8] to-[#5BC4B5] text-white text-base font-bold cursor-pointer"
       >
         ยืนยันข้อมูล
       </button>
 
       <button
         onClick={() => navigate(-1)}
-        style={{
-          width: '100%',
-          padding: '16px',
-          borderRadius: 12,
-          border: '1.5px solid #d0e4f7',
-          background: 'white',
-          color: '#1a2a4a',
-          fontSize: 16,
-          fontWeight: 600,
-          cursor: 'pointer',
-        }}
+        className="w-full py-4 rounded-xl border-[1.5px] border-[#d0e4f7] bg-white text-[#1a2a4a] text-base font-semibold cursor-pointer"
       >
         แก้ไขข้อมูล
       </button>

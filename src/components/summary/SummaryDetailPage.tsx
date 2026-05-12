@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PageHeader } from '../shared/PageHeader'
+import { fetchSummaryDetail, type SummaryDetailData } from '../../api/mockApi'
+import { LoadingSpinner, ErrorState } from '../shared/LoadingSpinner'
 
 const AcIcon = () => (
   <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
@@ -29,101 +32,92 @@ const HeaterIcon = () => (
   </svg>
 )
 
-const DEVICES = [
-  { rank: 1, name: 'เครื่องปรับอากาศ', pct: 35, Icon: AcIcon },
-  { rank: 2, name: 'ตู้เย็น',           pct: 25, Icon: FridgeIcon },
-  { rank: 3, name: 'เครื่องทำน้ำอุ่น',  pct: 15, Icon: HeaterIcon },
-]
-
-const TIPS = [
-  'ปรับแอร์ขึ้น 1-2°C (ลดการใช้พลังงานได้มาก)',
-  'ตั้งเวลาปิดเครื่องใช้ไฟฟ้าที่ไม่ใช้ (smart-plug schedule)',
-  'ใช้เตา/หม้อไฟพร้อมกันให้น้อยลงหรือย้ายบางกิจกรรมไปช่วงเช้า/บ่าย',
-]
+const DEVICE_ICONS = [AcIcon, FridgeIcon, HeaterIcon]
 
 export default function SummaryDetailPage() {
   const navigate = useNavigate()
+  const [data, setData]       = useState<SummaryDetailData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError]     = useState<string | null>(null)
+
+  const load = () => {
+    setLoading(true)
+    setError(null)
+    fetchSummaryDetail()
+      .then(res => { setData(res); setLoading(false) })
+      .catch(() => { setError('โหลดข้อมูลเพิ่มเติมไม่สำเร็จ'); setLoading(false) })
+  }
+
+  useEffect(() => { load() }, [])
 
   return (
-    <div className="screen">
+    <div className="max-w-[1150px] mx-auto pt-12 px-[18px] pb-8 md:pt-9 md:px-5 md:pb-5 flex flex-col gap-5">
       <PageHeader title="ข้อมูลเพิ่มเติม" />
 
-      <h1 style={{ fontSize: 26, fontWeight: 800, color: '#1a2a4a', lineHeight: 1.35 }}>
+      <h1 className="text-[26px] font-extrabold text-[#1a2a4a] leading-[1.35]">
         ข้อมูลเพิ่มเติม - เดือนตุลาคม
       </h1>
 
-      <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-        {/* Section title */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-          <p style={{ fontSize: 15, fontWeight: 700, color: '#4A9EE8', textDecoration: 'underline' }}>
-            Top 3 เครื่องใช้ไฟฟ้าที่ใช้ไฟมากที่สุด
-          </p>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="10" cy="10" r="9" stroke="#4A9EE8" strokeWidth="2" />
-          </svg>
-        </div>
+      <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] flex flex-col">
 
-        {/* Device list */}
-        {DEVICES.map((d, i) => (
-          <div key={d.rank}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '12px 0' }}>
-              <div style={{
-                width: 56, height: 56, borderRadius: 14,
-                background: '#EAF2FF',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0,
-              }}>
-                <d.Icon />
-              </div>
-              <span style={{ flex: 1, fontSize: 16, color: '#222', fontWeight: 500 }}>
-                {d.rank}. {d.name}
-              </span>
-              <span style={{ fontSize: 17, fontWeight: 700, color: '#4A9EE8' }}>
-                {d.pct} %
-              </span>
-            </div>
-            {i < DEVICES.length - 1 && (
-              <div style={{ borderTop: '1px solid #f0f4f8' }} />
-            )}
+        {loading && <LoadingSpinner />}
+        {error   && <ErrorState message={error} onRetry={load} />}
+
+        {data && <>
+          {/* Section title */}
+          <div className="flex items-center justify-between mb-5">
+            <p className="text-[15px] font-bold text-[#4A9EE8] underline">
+              Top 3 เครื่องใช้ไฟฟ้าที่ใช้ไฟมากที่สุด
+            </p>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="9" stroke="#4A9EE8" strokeWidth="2" />
+            </svg>
           </div>
-        ))}
 
-        {/* Peak time */}
-        <div style={{ borderTop: '1px solid #f0f4f8', marginTop: 8, paddingTop: 16, marginBottom: 16 }}>
-          <p style={{ fontSize: 14, color: '#4A9EE8', fontWeight: 500 }}>
-            ช่วงเวลาใช้ไฟสูงสุด : 18:00 - 22:00 น.
-          </p>
-        </div>
+          {/* Device list */}
+          {data.topDevices.map((d, i) => {
+            const Icon = DEVICE_ICONS[i] ?? AcIcon
+            return (
+              <div key={d.rank}>
+                <div className="flex items-center gap-4 py-3">
+                  <div className="w-14 h-14 rounded-[14px] bg-[#EAF2FF] flex items-center justify-center flex-shrink-0">
+                    <Icon />
+                  </div>
+                  <span className="flex-1 text-base text-[#222] font-medium">
+                    {d.rank}. {d.name}
+                  </span>
+                  <span className="text-[17px] font-bold text-[#4A9EE8]">{d.pct} %</span>
+                </div>
+                {i < data.topDevices.length - 1 && <div className="border-t border-[#f0f4f8]" />}
+              </div>
+            )
+          })}
 
-        {/* Tips */}
-        <div>
-          <p style={{ fontSize: 15, fontWeight: 700, color: '#1a2a4a', marginBottom: 10 }}>
-            คำแนะนำการประหยัดพลังงาน
-          </p>
-          <ul style={{ paddingLeft: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {TIPS.map((tip, i) => (
-              <li key={i} style={{ display: 'flex', gap: 8, fontSize: 14, color: '#444', lineHeight: 1.6 }}>
-                <span style={{ color: '#1a2a4a', flexShrink: 0 }}>•</span>
-                <span>{tip}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+          {/* Peak time */}
+          <div className="border-t border-[#f0f4f8] mt-2 pt-4 mb-4">
+            <p className="text-sm text-[#4A9EE8] font-medium">
+              ช่วงเวลาใช้ไฟสูงสุด : {data.peakTime}
+            </p>
+          </div>
+
+          {/* Tips */}
+          <div>
+            <p className="text-[15px] font-bold text-[#1a2a4a] mb-[10px]">คำแนะนำการประหยัดพลังงาน</p>
+            <ul className="list-none p-0 flex flex-col gap-2">
+              {data.tips.map((tip, i) => (
+                <li key={i} className="flex gap-2 text-sm text-[#444] leading-[1.6]">
+                  <span className="text-[#1a2a4a] flex-shrink-0">•</span>
+                  <span>{tip}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>}
       </div>
 
       <button
         onClick={() => navigate(-1)}
-        style={{
-          width: '100%',
-          padding: '16px',
-          borderRadius: 14,
-          border: '1.5px solid #d0e4f7',
-          background: 'white',
-          color: '#1a2a4a',
-          fontSize: 17,
-          fontWeight: 600,
-          cursor: 'pointer',
-        }}
+        className="w-full py-4 rounded-[14px] border-[1.5px] border-[#d0e4f7] bg-white text-[#1a2a4a] text-[17px] font-semibold cursor-pointer"
       >
         ย้อนกลับ
       </button>

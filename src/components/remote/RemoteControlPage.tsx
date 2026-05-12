@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Toggle } from '../shared/Toggle'
+import { fetchRooms, type Room } from '../../api/mockApi'
+import { LoadingSpinner, ErrorState } from '../shared/LoadingSpinner'
 
-/* ── SVG device icons ── */
 const AcIcon = () => (
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
     <rect x="2" y="8" width="24" height="12" rx="4" stroke="#4A9EE8" strokeWidth="2" fill="none" />
@@ -64,7 +65,6 @@ const FanIcon = () => (
   </svg>
 )
 
-/* ── Clock icon ── */
 const ClockIcon = () => (
   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
     <circle cx="9" cy="9" r="7.5" stroke="#4A9EE8" strokeWidth="1.5" fill="none" />
@@ -72,86 +72,47 @@ const ClockIcon = () => (
   </svg>
 )
 
-/* ── Room avatar placeholder ── */
+// แมปชื่ออุปกรณ์ → icon component
+const DEVICE_ICON_MAP: Record<string, React.ComponentType> = {
+  'เครื่องปรับอากาศ': AcIcon,
+  'ไฟเพดาน':          CeilingLightIcon,
+  'ทีวี':             TvIcon,
+  'ปลั๊กไฟ':          PlugIcon,
+  'โคมไฟหัวเตียง':   BedLampIcon,
+  'พัดลม':            FanIcon,
+}
+
 function RoomAvatar({ src, label, selected, onClick }: {
   src: string; label: string; selected: boolean; onClick: () => void
 }) {
   return (
-    <button onClick={onClick} style={{
-      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
-      background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-    }}>
-      <div style={{
-        width: 72, height: 72, borderRadius: '50%', overflow: 'hidden',
-        border: selected ? '3px solid #4A9EE8' : '3px solid transparent',
-        boxShadow: selected ? '0 0 0 2px #b8d8f5' : 'none',
-        background: '#ddd',
-        transition: 'border 0.2s',
-      }}>
-        <img src={src} alt={label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+    <button onClick={onClick} className="flex flex-col items-center gap-1.5 bg-transparent border-none cursor-pointer p-0">
+      <div className={`w-[72px] h-[72px] rounded-full overflow-hidden bg-[#ddd] transition-[border] duration-200 ${selected ? 'border-[3px] border-[#4A9EE8] shadow-[0_0_0_2px_#b8d8f5]' : 'border-[3px] border-transparent'}`}>
+        <img src={src} alt={label} className="w-full h-full object-cover" />
       </div>
-      <span style={{
-        fontSize: 12, fontWeight: selected ? 700 : 500,
-        color: selected ? '#1a2a4a' : '#6a8aaa',
-        textAlign: 'center', lineHeight: 1.3, maxWidth: 76,
-      }}>{label}</span>
+      <span className={`text-xs text-center leading-[1.3] max-w-[76px] ${selected ? 'font-bold text-[#1a2a4a]' : 'font-medium text-[#6a8aaa]'}`}>
+        {label}
+      </span>
     </button>
   )
 }
 
-/* ── Types ── */
-interface DeviceItem {
-  id: number
-  name: string
-  icon: React.ReactNode
-  on: boolean
-}
-
-interface Room {
-  id: number
-  label: string
-  img: string
-  devices: DeviceItem[]
-}
-
-const ROOMS: Room[] = [
-  {
-    id: 1,
-    label: 'ห้องนั่งเล่น',
-    img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=120&q=60',
-    devices: [
-      { id: 1, name: 'เครื่องปรับอากาศ', icon: <AcIcon />,          on: false },
-      { id: 2, name: 'ไฟเพดาน',          icon: <CeilingLightIcon />, on: false },
-      { id: 3, name: 'ทีวี',             icon: <TvIcon />,           on: false },
-      { id: 4, name: 'ปลั๊กไฟ',          icon: <PlugIcon />,         on: false },
-    ],
-  },
-  {
-    id: 2,
-    label: 'ห้องนอน\nน้องฟาร์',
-    img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=120&q=60',
-    devices: [
-      { id: 1, name: 'เครื่องปรับอากาศ', icon: <AcIcon />,     on: false },
-      { id: 2, name: 'โคมไฟหัวเตียง',   icon: <BedLampIcon />, on: false },
-      { id: 3, name: 'พัดลม',            icon: <FanIcon />,     on: false },
-      { id: 4, name: 'ปลั๊กไฟ',          icon: <PlugIcon />,    on: false },
-    ],
-  },
-  {
-    id: 3,
-    label: 'ห้องน้ำชั้น 2',
-    img: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=120&q=60',
-    devices: [
-      { id: 1, name: 'ไฟเพดาน',          icon: <CeilingLightIcon />, on: false },
-      { id: 2, name: 'ปลั๊กไฟ',          icon: <PlugIcon />,         on: false },
-    ],
-  },
-]
-
 export default function RemoteControlPage() {
   const navigate = useNavigate()
+  const [rooms, setRooms]           = useState<Room[]>([])
+  const [loading, setLoading]       = useState(true)
+  const [error, setError]           = useState<string | null>(null)
   const [selectedRoom, setSelectedRoom] = useState(0)
-  const [rooms, setRooms] = useState<Room[]>(ROOMS)
+
+  const load = () => {
+    setLoading(true)
+    setError(null)
+    fetchRooms()
+      .then(res => { setRooms(res); setLoading(false) })
+      .catch(() => { setError('โหลดข้อมูลอุปกรณ์ไม่สำเร็จ'); setLoading(false) })
+  }
+
+  useEffect(() => { load() }, [])
 
   const toggleDevice = (deviceId: number) => {
     setRooms(prev => prev.map((r, ri) =>
@@ -162,120 +123,76 @@ export default function RemoteControlPage() {
     ))
   }
 
-  const currentDevices = rooms[selectedRoom].devices
+  const currentDevices = rooms[selectedRoom]?.devices ?? []
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: '#C9E3F5',
-      display: 'flex',
-      flexDirection: 'column',
-      padding: '36px 20px 20px',
-      gap: 20,
-      maxWidth: 480,
-      margin: '0 auto',
-    }}>
+    <div className="min-h-screen bg-[#C9E3F5] flex flex-col gap-5 px-5 pt-9 pb-5 max-w-[480px] mx-auto">
+
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-        <div style={{
-          width: 56, height: 56, borderRadius: '50%', overflow: 'hidden',
-          flexShrink: 0, background: '#b8d8f5',
-          border: '2px solid white',
-        }}>
+      <div className="flex items-center gap-[14px]">
+        <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 bg-[#b8d8f5] border-2 border-white">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Hippo_Waterfall.jpg/240px-Hippo_Waterfall.jpg"
             alt="profile"
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            className="w-full h-full object-cover"
           />
         </div>
-        <h2 style={{ fontSize: 24, fontWeight: 700, color: '#1a2a4a', margin: 0 }}>
-          ครอบครัวหมูแด้ง
-        </h2>
+        <h2 className="text-2xl font-bold text-[#1a2a4a] m-0">ครอบครัวหมูแด้ง</h2>
       </div>
 
-      {/* Room selector */}
-      <div style={{
-        background: 'white',
-        borderRadius: 20,
-        padding: '16px 12px',
-        display: 'flex',
-        gap: 12,
-        justifyContent: 'space-around',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-      }}>
-        {rooms.map((room, idx) => (
-          <RoomAvatar
-            key={room.id}
-            src={room.img}
-            label={room.label}
-            selected={selectedRoom === idx}
-            onClick={() => setSelectedRoom(idx)}
-          />
-        ))}
-      </div>
+      {loading && (
+        <div className="bg-white rounded-[20px] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+          <LoadingSpinner />
+        </div>
+      )}
 
-      {/* Device list */}
-      <div style={{
-        background: 'white',
-        borderRadius: 20,
-        padding: '8px 16px',
-        display: 'flex',
-        flexDirection: 'column',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-      }}>
-        {currentDevices.map((device, idx) => (
-          <div key={device.id}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 14,
-              padding: '16px 0',
-            }}>
-              {/* Icon box */}
-              <div style={{
-                width: 52, height: 52, borderRadius: 14,
-                background: '#e8f2fb',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0,
-              }}>
-                {device.icon}
+      {error && (
+        <div className="bg-white rounded-[20px] p-4 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+          <ErrorState message={error} onRetry={load} />
+        </div>
+      )}
+
+      {!loading && !error && rooms.length > 0 && <>
+        {/* Room selector */}
+        <div className="bg-white rounded-[20px] px-3 py-4 flex gap-3 justify-around shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+          {rooms.map((room, idx) => (
+            <RoomAvatar
+              key={room.id}
+              src={room.img}
+              label={room.label}
+              selected={selectedRoom === idx}
+              onClick={() => setSelectedRoom(idx)}
+            />
+          ))}
+        </div>
+
+        {/* Device list */}
+        <div className="bg-white rounded-[20px] px-4 py-2 flex flex-col shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+          {currentDevices.map((device, idx) => {
+            const Icon = DEVICE_ICON_MAP[device.name] ?? PlugIcon
+            return (
+              <div key={device.id}>
+                <div className="flex items-center gap-[14px] py-4">
+                  <div className="w-[52px] h-[52px] rounded-[14px] bg-[#e8f2fb] flex items-center justify-center flex-shrink-0">
+                    <Icon />
+                  </div>
+                  <span className="flex-1 text-base font-medium text-[#1a2a4a]">{device.name}</span>
+                  <button className="bg-transparent border-none cursor-pointer p-1">
+                    <ClockIcon />
+                  </button>
+                  <Toggle checked={device.on} onChange={() => toggleDevice(device.id)} />
+                </div>
+                {idx < currentDevices.length - 1 && <div className="h-px bg-[#f0f4f8]" />}
               </div>
-
-              {/* Name */}
-              <span style={{ flex: 1, fontSize: 16, fontWeight: 500, color: '#1a2a4a' }}>
-                {device.name}
-              </span>
-
-              {/* Clock */}
-              <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
-                <ClockIcon />
-              </button>
-
-              {/* Toggle */}
-              <Toggle checked={device.on} onChange={() => toggleDevice(device.id)} />
-            </div>
-            {idx < currentDevices.length - 1 && (
-              <div style={{ height: 1, background: '#f0f4f8' }} />
-            )}
-          </div>
-        ))}
-      </div>
+            )
+          })}
+        </div>
+      </>}
 
       {/* Back button */}
       <button
         onClick={() => navigate(-1)}
-        style={{
-          width: '100%',
-          padding: '16px',
-          background: 'white',
-          border: '2px solid #d0e4f5',
-          borderRadius: 16,
-          fontSize: 17,
-          fontWeight: 700,
-          color: '#1a2a4a',
-          cursor: 'pointer',
-          marginTop: 'auto',
-        }}
+        className="w-full py-4 bg-white border-2 border-[#d0e4f5] rounded-2xl text-[17px] font-bold text-[#1a2a4a] cursor-pointer mt-auto"
       >
         ย้อนกลับ
       </button>

@@ -20,76 +20,45 @@ export default function AnalysisPage() {
   }
 
   return (
-    <div className="screen">
+    <div className="max-w-[1150px] mx-auto pt-12 px-[18px] pb-8 md:pt-9 md:px-5 md:pb-5 flex flex-col gap-5">
       <PageHeader title="การวิเคราะห์การใช้ไฟฟ้า" />
 
-      <div className="card">
-        <p style={{ fontWeight: 700, fontSize: 16, marginBottom: 10 }}>จำนวนสมาชิก</p>
+      <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+        <p className="font-bold text-base mb-[10px]">จำนวนสมาชิก</p>
         <input
           type="number"
           min={1}
           value={members}
           onChange={e => setMembers(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '12px 14px',
-            borderRadius: 8,
-            border: '1.5px solid #d0e4f7',
-            fontSize: 16,
-            marginBottom: 16,
-            outline: 'none',
-            background: '#fff',
-          }}
+          className="w-full px-[14px] py-3 rounded-lg border-[1.5px] border-[#d0e4f7] text-base mb-4 outline-none bg-white"
         />
-        <button
-          style={{
-            width: '100%',
-            padding: '14px',
-            borderRadius: 10,
-            border: 'none',
-            background: 'linear-gradient(135deg, #4A9EE8, #5BC4B5)',
-            color: 'white',
-            fontSize: 16,
-            fontWeight: 700,
-            cursor: 'pointer',
-          }}
-        >
+        <button className="w-full py-[14px] rounded-[10px] border-none bg-gradient-to-br from-[#4A9EE8] to-[#5BC4B5] text-white text-base font-bold cursor-pointer">
           เริ่มคำนวณ
         </button>
       </div>
 
-      <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <p style={{ color: '#555', fontSize: 14 }}>ผลคำนวณการใช้ไฟฟ้าที่เหมาะสม</p>
+      <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] flex flex-col gap-[14px]">
+        <p className="text-[#555] text-sm">ผลคำนวณการใช้ไฟฟ้าที่เหมาะสม</p>
 
         <div
           onClick={() => navigate('/analysis/daily-advice')}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 16,
-            padding: '16px', background: '#f0f6ff', borderRadius: 10, cursor: 'pointer',
-          }}>
-          <div style={{
-            width: 48, height: 48, borderRadius: '50%', background: '#3B7DD8',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-          }}>
+          className="flex items-center gap-4 p-4 bg-[#f0f6ff] rounded-[10px] cursor-pointer"
+        >
+          <div className="w-12 h-12 rounded-full bg-[#3B7DD8] flex items-center justify-center flex-shrink-0">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <rect x="3" y="13" width="4" height="7" rx="1" fill="white" />
               <rect x="9.5" y="9" width="4" height="11" rx="1" fill="white" />
               <rect x="16" y="5" width="4" height="15" rx="1" fill="white" />
             </svg>
           </div>
-          <span style={{ fontWeight: 700, fontSize: 16, flex: 1 }}>คำแนะนำรายวัน</span>
+          <span className="font-bold text-base flex-1">คำแนะนำรายวัน</span>
         </div>
 
         <div
           onClick={() => navigate('/analysis/monthly-advice')}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 16,
-            padding: '16px', background: '#f0f6ff', borderRadius: 10, cursor: 'pointer',
-          }}>
-          <div style={{
-            width: 48, height: 48, borderRadius: 10, background: '#3B7DD8',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-          }}>
+          className="flex items-center gap-4 p-4 bg-[#f0f6ff] rounded-[10px] cursor-pointer"
+        >
+          <div className="w-12 h-12 rounded-[10px] bg-[#3B7DD8] flex items-center justify-center flex-shrink-0">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               <rect x="3" y="5" width="18" height="16" rx="2" stroke="white" strokeWidth="2" />
               <line x1="3" y1="10" x2="21" y2="10" stroke="white" strokeWidth="2" />
@@ -97,44 +66,25 @@ export default function AnalysisPage() {
               <line x1="16" y1="3" x2="16" y2="7" stroke="white" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </div>
-          <span style={{ fontWeight: 700, fontSize: 16, flex: 1 }}>คำแนะนำรายเดือน</span>
+          <span className="font-bold text-base flex-1">คำแนะนำรายเดือน</span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', paddingTop: 4 }}>
-          <span style={{ color: '#555', fontSize: 14 }}>ค่าไฟที่ท่านต้องการใช้ ต่อเดือน</span>
+        <div className="flex items-center gap-2 flex-wrap pt-1">
+          <span className="text-[#555] text-sm">ค่าไฟที่ท่านต้องการใช้ ต่อเดือน</span>
           <input
             type="number"
             min={0}
             value={monthlyBudget}
             onChange={e => setMonthlyBudget(e.target.value)}
-            style={{
-              width: 90,
-              padding: '4px 8px',
-              border: 'none',
-              borderBottom: '1.5px solid #aaa',
-              fontSize: 14,
-              textAlign: 'center',
-              background: 'transparent',
-              outline: 'none',
-            }}
+            className="w-[90px] px-2 py-1 border-0 border-b-[1.5px] border-b-[#aaa] text-sm text-center bg-transparent outline-none"
           />
-          <span style={{ color: '#555', fontSize: 14 }}>บาท</span>
+          <span className="text-[#555] text-sm">บาท</span>
         </div>
       </div>
 
       <button
         onClick={handleConfirm}
-        style={{
-          width: '100%',
-          padding: '16px',
-          borderRadius: 12,
-          border: 'none',
-          background: 'linear-gradient(135deg, #4A9EE8, #5BC4B5)',
-          color: 'white',
-          fontSize: 16,
-          fontWeight: 700,
-          cursor: 'pointer',
-        }}
+        className="w-full py-4 rounded-xl border-none bg-gradient-to-br from-[#4A9EE8] to-[#5BC4B5] text-white text-base font-bold cursor-pointer"
       >
         ยืนยันข้อมูล
       </button>

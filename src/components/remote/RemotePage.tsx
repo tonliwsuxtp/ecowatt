@@ -31,50 +31,24 @@ export default function RemotePage() {
   const navigate = useNavigate()
 
   return (
-    <div className="screen" style={{ background: '#C9E3F5', minHeight: '100vh' }}>
-      <PageHeader title="รีโมทควบคุมอุปกรณ์" />
+    <div className="min-h-screen bg-[#C9E3F5]">
+      <div className="max-w-[1150px] mx-auto pt-12 px-[18px] pb-8 md:pt-9 md:px-5 md:pb-5 flex flex-col gap-5">
+        <PageHeader title="รีโมทควบคุมอุปกรณ์" />
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 20, padding: '8px 20px 24px' }}>
         <button
           onClick={() => navigate('/components/remote/RemoteControlPage')}
-          style={{
-            background: 'white',
-            border: 'none',
-            borderRadius: 20,
-            padding: '40px 20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 16,
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-            width: '100%',
-          }}
+          className="w-full bg-white border-none rounded-[20px] py-10 px-5 flex flex-col items-center gap-4 cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
         >
           <RemoteIcon />
-          <span style={{ fontSize: 18, fontWeight: 600, color: '#1a2a4a' }}>
-            สั่งการเครื่องใช้ไฟฟ้า
-          </span>
+          <span className="text-lg font-semibold text-[#1a2a4a]">สั่งการเครื่องใช้ไฟฟ้า</span>
         </button>
 
         <button
           onClick={() => navigate('/components/remote/RemoteScanPage')}
-          style={{
-            background: 'white',
-            border: 'none',
-            borderRadius: 20,
-            padding: '40px 20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 16,
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-            width: '100%',
-          }}
+          className="w-full bg-white border-none rounded-[20px] py-10 px-5 flex flex-col items-center gap-4 cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
         >
           <ScanIcon />
-          <span style={{ fontSize: 18, fontWeight: 600, color: '#1a2a4a', textAlign: 'center' }}>
+          <span className="text-lg font-semibold text-[#1a2a4a] text-center">
             สแกนอุปกรณ์ไฟฟ้า<br />AR Scan
           </span>
         </button>

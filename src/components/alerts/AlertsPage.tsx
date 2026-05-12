@@ -1,61 +1,108 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { PageHeader } from '../shared/PageHeader'
 import { Toggle } from '../shared/Toggle'
 
+type SoundMode = 'sound' | 'silent' | 'vibrate'
+type SoundOption = 'youtube' | 'spotify' | 'apple'
 
-type AlertKey = 'daily' | 'monthly' | 'peak' | 'tip' | 'device'
-
-const ALERT_ITEMS: { key: AlertKey; label: string; sub: string }[] = [
-  { key: 'daily',   label: 'แจ้งเตือนรายวัน',      sub: 'แจ้งเตือนเวลา 20:00 น.' },
-  { key: 'monthly', label: 'แจ้งเตือนรายเดือน',    sub: 'เมื่อใกล้ถึงขีดจำกัด' },
-  { key: 'peak',    label: 'แจ้งเตือนช่วง Peak',   sub: '09:00 – 22:00 น.' },
-  { key: 'tip',     label: 'เคล็ดลับประหยัดไฟ',    sub: 'รับเคล็ดลับประจำวัน' },
-  { key: 'device',  label: 'แจ้งเตือนอุปกรณ์',     sub: 'เมื่อเปิดนานเกินไป' },
+const SOUND_OPTIONS: { key: SoundOption; label: string; icon: string; bg: string }[] = [
+  { key: 'youtube', label: 'YouTube',     icon: '▶', bg: '#FF0000' },
+  { key: 'spotify', label: 'Spotify',     icon: '♪', bg: '#1DB954' },
+  { key: 'apple',   label: 'Apple Music', icon: '♫', bg: '#FC3C44' },
 ]
 
 export default function AlertsPage() {
-  const [on, setOn] = useState<Record<AlertKey, boolean>>({
-    daily: true, monthly: true, peak: false, tip: true, device: false,
-  })
-  const [dailyLimit,   setDailyLimit]   = useState(5)
-  const [monthlyLimit, setMonthlyLimit] = useState(150)
+  const navigate = useNavigate()
+  const [soundMode,     setSoundMode]     = useState<SoundMode>('sound')
+  const [notifEnabled,  setNotifEnabled]  = useState(false)
+  const [selectedSound, setSelectedSound] = useState<SoundOption>('youtube')
+  const [limitAlert,    setLimitAlert]    = useState(false)
+
+  const modeButtons: { key: SoundMode; label: string }[] = [
+    { key: 'sound',   label: 'เปิดเสียง' },
+    { key: 'silent',  label: 'ปิดเสียง' },
+    { key: 'vibrate', label: 'สั่น' },
+  ]
 
   return (
-    <div className="screen">
-      <PageHeader title="ตั้งค่าการแจ้งเตือน" />
+    <div className="max-w-[1150px] mx-auto pt-12 px-[18px] pb-8 md:pt-9 md:px-5 md:pb-5 flex flex-col gap-5">
+      <PageHeader title="การแจ้งเตือน" showBack />
 
-      <div className="card">
-        <h3 className="section-title">การแจ้งเตือน</h3>
-        {ALERT_ITEMS.map(item => (
-          <div key={item.key} className="list-row" style={{ borderBottom: '1px solid #f0f4f8' }}>
-            <div className="list-text">
-              <p className="list-main">{item.label}</p>
-              <p className="list-sub">{item.sub}</p>
-            </div>
-            <Toggle checked={on[item.key]} onChange={v => setOn(o => ({ ...o, [item.key]: v }))} />
-          </div>
-        ))}
-      </div>
-
-      <div className="card">
-        <h3 className="section-title">ขีดจำกัดการใช้ไฟ</h3>
-        <div className="slider-row">
-          <div className="slider-header">
-            <span className="list-main">รายวัน (kWh)</span>
-            <span className="slider-value blue">{dailyLimit} kWh</span>
-          </div>
-          <input type="range" min={1} max={20} value={dailyLimit}
-            onChange={e => setDailyLimit(+e.target.value)} className="slider blue-slider" />
-        </div>
-        <div className="slider-row">
-          <div className="slider-header">
-            <span className="list-main">รายเดือน (kWh)</span>
-            <span className="slider-value teal">{monthlyLimit} kWh</span>
-          </div>
-          <input type="range" min={50} max={500} step={10} value={monthlyLimit}
-            onChange={e => setMonthlyLimit(+e.target.value)} className="slider teal-slider" />
+      {/* Notification Mode */}
+      <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+        <h3 className="text-[15px] font-bold text-[#333] mb-3">โหมดแจ้งเตือน</h3>
+        <div className="flex gap-[10px]">
+          {modeButtons.map(btn => (
+            <button
+              key={btn.key}
+              onClick={() => setSoundMode(btn.key)}
+              className={`flex-1 py-[10px] rounded-[10px] border-[1.5px] font-semibold text-sm cursor-pointer transition-all duration-[150ms] ${
+                soundMode === btn.key
+                  ? 'border-[#3B7DD8] bg-[#3B7DD8] text-white'
+                  : 'border-[#e0e0e0] bg-white text-[#555]'
+              }`}
+            >
+              {btn.label}
+            </button>
+          ))}
         </div>
       </div>
+
+      {/* Notification via Push */}
+      <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+        <h3 className="text-[15px] font-bold text-[#333] mb-3">การแจ้งเตือน</h3>
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-semibold text-[#222] flex-1">ผ่าน Notification</span>
+          <Toggle checked={notifEnabled} onChange={setNotifEnabled} />
+        </div>
+      </div>
+
+      {/* Select Notification Sound */}
+      <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+        <h3 className="text-[15px] font-bold text-[#333] mb-3">เลือกเสียงแจ้งเตือน</h3>
+        <div className="flex flex-col gap-1">
+          {SOUND_OPTIONS.map(opt => (
+            <button
+              key={opt.key}
+              onClick={() => setSelectedSound(opt.key)}
+              className={`flex items-center gap-[14px] px-[14px] py-3 rounded-[10px] border-none cursor-pointer text-left transition-colors duration-[150ms] ${
+                selectedSound === opt.key ? 'bg-[#f0f6ff]' : 'bg-[#f8f8f8]'
+              }`}
+            >
+              <span
+                className="w-9 h-9 rounded-lg flex items-center justify-center text-white text-base flex-shrink-0"
+                style={{ background: opt.bg }}
+              >
+                {opt.icon}
+              </span>
+              <span className="text-[15px] font-medium text-[#222] flex-1">{opt.label}</span>
+              {selectedSound === opt.key && (
+                <span className="text-[#3B7DD8] text-lg">✓</span>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Limit / Exceeded Alert */}
+      <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-semibold text-[#222] flex-1 leading-relaxed">
+            เตือนเมื่อใช้ไฟฟ้าใกล้ครบที่กำหนด<br />
+            /เมื่อใช้ไฟฟ้าเกินปริมาณ
+          </span>
+          <Toggle checked={limitAlert} onChange={setLimitAlert} />
+        </div>
+      </div>
+
+      {/* Back Button */}
+      <button
+        onClick={() => navigate(-1)}
+        className="w-full py-4 rounded-xl border-[1.5px] border-[#3B7DD8] bg-white text-[#1a2a4a] text-[17px] font-bold cursor-pointer transition-colors duration-[150ms] hover:bg-[#f0f6ff]"
+      >
+        ย้อนกลับ
+      </button>
     </div>
   )
 }

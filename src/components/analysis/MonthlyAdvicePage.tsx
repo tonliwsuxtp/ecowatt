@@ -17,7 +17,6 @@ function BarChart() {
   const paddingTop = 10
   const paddingBottom = 36
   const totalW = paddingX + BAR_DATA.length * (barW + gap) - gap + 16
-
   const yLabels = [0, 100, 200, 300, 400]
 
   return (
@@ -26,14 +25,11 @@ function BarChart() {
         const y = paddingTop + chartH - (v / MAX_VALUE) * chartH
         return (
           <g key={v}>
-            <text x={paddingX - 6} y={y + 4} textAnchor="end" fontSize="11" fill="#3B7DD8">
-              {v}
-            </text>
+            <text x={paddingX - 6} y={y + 4} textAnchor="end" fontSize="11" fill="#3B7DD8">{v}</text>
             <line x1={paddingX} y1={y} x2={totalW} y2={y} stroke="#e5eef8" strokeWidth="1" />
           </g>
         )
       })}
-
       {BAR_DATA.map((d, i) => {
         const x = paddingX + i * (barW + gap)
         const barH = (d.value / MAX_VALUE) * chartH
@@ -41,13 +37,7 @@ function BarChart() {
         return (
           <g key={d.label}>
             <rect x={x} y={y} width={barW} height={barH} rx="4" fill="#6B9FD4" />
-            <text
-              x={x + barW / 2}
-              y={chartH + paddingTop + paddingBottom - 4}
-              textAnchor="middle"
-              fontSize="10"
-              fill="#3B7DD8"
-            >
+            <text x={x + barW / 2} y={chartH + paddingTop + paddingBottom - 4} textAnchor="middle" fontSize="10" fill="#3B7DD8">
               {d.label}
             </text>
           </g>
@@ -61,11 +51,11 @@ export default function MonthlyAdvicePage() {
   const navigate = useNavigate()
 
   return (
-    <div className="screen" style={{ background: '#D6E8F8', minHeight: '100vh', padding: '24px 20px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: 4 }}>
+    <div className="min-h-screen bg-[#D6E8F8] px-5 pt-6 pb-8 flex flex-col gap-5">
+      <div className="flex items-center mb-1">
         <button
           onClick={() => navigate(-1)}
-          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: '#1a2a4a' }}
+          className="bg-transparent border-none cursor-pointer p-1 text-[#1a2a4a]"
           aria-label="ย้อนกลับ"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -74,49 +64,26 @@ export default function MonthlyAdvicePage() {
           </svg>
         </button>
       </div>
-      <p style={{ textAlign: 'center', fontSize: 13, color: '#5580a0', marginBottom: 12 }}>
-        คำแนะนำรำรายเดือน
-      </p>
 
-      <h1 style={{
-        textAlign: 'center', fontSize: 28, fontWeight: 800,
-        color: '#1a2a4a', lineHeight: 1.35, marginBottom: 20,
-      }}>
+      <p className="text-center text-[13px] text-[#5580a0]">คำแนะนำรำรายเดือน</p>
+
+      <h1 className="text-center text-[28px] font-extrabold text-[#1a2a4a] leading-[1.35]">
         คำแนะนำการใช้<br />ไฟฟ้ารายเดือน
       </h1>
 
-      <div style={{
-        background: '#fff', borderRadius: 16, padding: '20px 16px',
-        marginBottom: 20, boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-      }}>
+      <div className="bg-white rounded-2xl px-4 py-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
         <BarChart />
       </div>
 
-      <div style={{ textAlign: 'center', marginBottom: 20 }}>
-        <p style={{ fontWeight: 800, fontSize: 18, color: '#1a2a4a', marginBottom: 6 }}>
-          คำแนะนำรายเดือน
-        </p>
-        <p style={{ fontWeight: 800, fontSize: 18, color: '#1a2a4a', marginBottom: 14 }}>
-          ใช้ไฟไม่เกิน 300 หน่วยต่อเดือน
-        </p>
-        <p style={{ fontSize: 14, color: '#444' }}>
-          ทริค : ใช้เครื่องใช้ไฟฟ้าประเภทที่มีประสิทธิภาพ
-        </p>
+      <div className="text-center">
+        <p className="font-extrabold text-lg text-[#1a2a4a] mb-1.5">คำแนะนำรายเดือน</p>
+        <p className="font-extrabold text-lg text-[#1a2a4a] mb-3.5">ใช้ไฟไม่เกิน 300 หน่วยต่อเดือน</p>
+        <p className="text-sm text-[#444]">ทริค : ใช้เครื่องใช้ไฟฟ้าประเภทที่มีประสิทธิภาพ</p>
       </div>
 
       <button
         onClick={() => navigate(-1)}
-        style={{
-          width: '100%',
-          padding: '16px',
-          borderRadius: 12,
-          border: 'none',
-          background: 'linear-gradient(135deg, #4A9EE8, #5BC4B5)',
-          color: 'white',
-          fontSize: 16,
-          fontWeight: 700,
-          cursor: 'pointer',
-        }}
+        className="w-full py-4 rounded-xl border-none bg-gradient-to-br from-[#4A9EE8] to-[#5BC4B5] text-white text-base font-bold cursor-pointer"
       >
         ย้อนกลับ
       </button>
