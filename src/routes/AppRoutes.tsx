@@ -7,6 +7,8 @@ import AdvicePage from '../components/analysis/AdvicePage'
 import DailyAdvicePage from '../components/analysis/DailyAdvicePage'
 import MonthlyAdvicePage from '../components/analysis/MonthlyAdvicePage'
 import RemotePage from '../components/remote/RemotePage'
+import RemoteControlPage from '../components/remote/RemoteControlPage'
+import RemoteScanPage from '../components/remote/RemoteScanPage'
 import SummaryPage from '../components/summary/SummaryPage'
 import AlertsPage from '../components/alerts/AlertsPage'
 import AccessibilityPage from '../components/accessibility/AccessibilityPage'
@@ -23,6 +25,8 @@ export function AppRoutes() {
         <Route path="analysis/daily-advice" element={<DailyAdvicePage />} />
         <Route path="analysis/monthly-advice" element={<MonthlyAdvicePage />} />
         <Route path="components/remote/RemotePage" element={<RemotePage />} />
+        <Route path="components/remote/RemoteControlPage" element={<RemoteControlPage />} />
+        <Route path="components/remote/RemoteScanPage" element={<RemoteScanPage />} />
         <Route path="components/summary/SummaryPage" element={<SummaryPage />} />
         <Route path="components/alerts/AlertsPage" element={<AlertsPage />} />
         <Route path="components/accessibility/AccessibilityPage" element={<AccessibilityPage />} />

@@ -1,63 +1,83 @@
-import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { PageHeader } from '../shared/PageHeader'
-import { Toggle } from '../shared/Toggle'
 
-
-interface Device {
-  id: number
-  name: string
-  room: string
-  on: boolean
-  watts: number
-  emoji: string
+function RemoteIcon() {
+  return (
+    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="16" fill="#4A9EE8" />
+      <rect x="20" y="14" width="24" height="36" rx="6" fill="white" />
+      <rect x="26" y="20" width="12" height="3" rx="1.5" fill="#4A9EE8" />
+      <rect x="26" y="25" width="12" height="3" rx="1.5" fill="#4A9EE8" />
+      <circle cx="32" cy="38" r="5" fill="#4A9EE8" />
+      <circle cx="32" cy="38" r="2.5" fill="white" />
+    </svg>
+  )
 }
 
-const INITIAL_DEVICES: Device[] = [
-  { id: 1, name: 'แอร์ห้องนอน', room: 'ห้องนอน',     on: true,  watts: 1200, emoji: '❄️' },
-  { id: 2, name: 'ไฟห้องนอน',   room: 'ห้องนอน',     on: true,  watts: 60,   emoji: '💡' },
-  { id: 3, name: 'พัดลม',        room: 'ห้องนั่งเล่น', on: false, watts: 45,   emoji: '🌀' },
-  { id: 4, name: 'ทีวี',         room: 'ห้องนั่งเล่น', on: true,  watts: 120,  emoji: '📺' },
-  { id: 5, name: 'ตู้เย็น',      room: 'ห้องครัว',    on: true,  watts: 150,  emoji: '🧊' },
-  { id: 6, name: 'ไมโครเวฟ',    room: 'ห้องครัว',    on: false, watts: 800,  emoji: '🍳' },
-]
+function ScanIcon() {
+  return (
+    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="16" fill="#4A9EE8" />
+      <path
+        d="M14 22v-6a2 2 0 0 1 2-2h6M42 14h6a2 2 0 0 1 2 2v6M50 42v6a2 2 0 0 1-2 2h-6M22 50h-6a2 2 0 0 1-2-2v-6"
+        stroke="white" strokeWidth="3" strokeLinecap="round" />
+      <rect x="22" y="22" width="20" height="20" rx="10" fill="none" stroke="white" strokeWidth="3" />
+      <circle cx="32" cy="32" r="5" fill="white" />
+    </svg>
+  )
+}
 
 export default function RemotePage() {
-  const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES)
-
-  const toggle = (id: number) =>
-    setDevices(ds => ds.map(d => d.id === id ? { ...d, on: !d.on } : d))
-
-  const totalWatts = devices.filter(d => d.on).reduce((s, d) => s + d.watts, 0)
-  const onCount    = devices.filter(d => d.on).length
+  const navigate = useNavigate()
 
   return (
-    <div className="screen">
+    <div className="screen" style={{ background: '#C9E3F5', minHeight: '100vh' }}>
       <PageHeader title="รีโมทควบคุมอุปกรณ์" />
 
-      <div className="card row-between">
-        <div>
-          <p className="sub-label">กำลังใช้งาน</p>
-          <p className="big-value blue">{totalWatts} W</p>
-        </div>
-        <div style={{ textAlign: 'right' }}>
-          <p className="sub-label">อุปกรณ์เปิดอยู่</p>
-          <p className="big-value teal">{onCount}/{devices.length}</p>
-        </div>
-      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 20, padding: '8px 20px 24px' }}>
+        <button
+          onClick={() => navigate('/components/remote/RemoteControlPage')}
+          style={{
+            background: 'white',
+            border: 'none',
+            borderRadius: 20,
+            padding: '40px 20px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 16,
+            cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+            width: '100%',
+          }}
+        >
+          <RemoteIcon />
+          <span style={{ fontSize: 18, fontWeight: 600, color: '#1a2a4a' }}>
+            สั่งการเครื่องใช้ไฟฟ้า
+          </span>
+        </button>
 
-      <div className="device-list">
-        {devices.map(d => (
-          <div key={d.id} className="card device-row">
-            <div className="device-emoji" style={{ background: d.on ? '#4A9EE8' : '#ddd' }}>
-              {d.emoji}
-            </div>
-            <div className="device-info">
-              <p className="device-name">{d.name}</p>
-              <p className="device-sub">{d.room} · {d.watts} W</p>
-            </div>
-            <Toggle checked={d.on} onChange={() => toggle(d.id)} />
-          </div>
-        ))}
+        <button
+          onClick={() => navigate('/components/remote/RemoteScanPage')}
+          style={{
+            background: 'white',
+            border: 'none',
+            borderRadius: 20,
+            padding: '40px 20px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 16,
+            cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+            width: '100%',
+          }}
+        >
+          <ScanIcon />
+          <span style={{ fontSize: 18, fontWeight: 600, color: '#1a2a4a', textAlign: 'center' }}>
+            สแกนอุปกรณ์ไฟฟ้า<br />AR Scan
+          </span>
+        </button>
       </div>
     </div>
   )
