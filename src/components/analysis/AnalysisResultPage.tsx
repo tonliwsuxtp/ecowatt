@@ -23,7 +23,7 @@ export default function AnalysisResultPage() {
 
   return (
     <div className="screen">
-      <PageHeader title="สรุปผลการวิเคราะห์ไฟฟ้า" />
+      <PageHeader title="สรุปผลการวิเคราะห์ไฟฟ้า" showBack />
 
       <div className="card">
         <p style={{ color: '#666', fontSize: 14, marginBottom: 6 }}>การใช้ไฟฟ้าที่เหมาะสมต่อวัน</p>

@@ -48,7 +48,7 @@ export default function AdvicePage() {
 
   return (
     <div className="screen">
-      <PageHeader title="คำแนะนำการใช้ไฟฟ้า" />
+      <PageHeader title="คำแนะนำการใช้ไฟฟ้า" showBack />
 
       <div className="card" style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
         <PieChart />

@@ -61,10 +61,12 @@ export default function AnalysisPage() {
       <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         <p style={{ color: '#555', fontSize: 14 }}>ผลคำนวณการใช้ไฟฟ้าที่เหมาะสม</p>
 
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 16,
-          padding: '16px', background: '#f0f6ff', borderRadius: 10, cursor: 'pointer',
-        }}>
+        <div
+          onClick={() => navigate('/analysis/daily-advice')}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 16,
+            padding: '16px', background: '#f0f6ff', borderRadius: 10, cursor: 'pointer',
+          }}>
           <div style={{
             width: 48, height: 48, borderRadius: '50%', background: '#3B7DD8',
             display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
@@ -78,10 +80,12 @@ export default function AnalysisPage() {
           <span style={{ fontWeight: 700, fontSize: 16, flex: 1 }}>คำแนะนำรายวัน</span>
         </div>
 
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 16,
-          padding: '16px', background: '#f0f6ff', borderRadius: 10, cursor: 'pointer',
-        }}>
+        <div
+          onClick={() => navigate('/analysis/monthly-advice')}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 16,
+            padding: '16px', background: '#f0f6ff', borderRadius: 10, cursor: 'pointer',
+          }}>
           <div style={{
             width: 48, height: 48, borderRadius: 10, background: '#3B7DD8',
             display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
