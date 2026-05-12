@@ -1,14 +1,13 @@
 import { useNavigate, useLocation } from 'react-router-dom'
-import { PATHS } from '../../routes/paths'
 
 const NAV_ITEMS = [
-  { path: PATHS.HOME,          label: 'หน้าหลัก',              icon: '🏠' },
-  { path: PATHS.ANALYSIS,      label: 'วิเคราะห์การใช้ไฟฟ้า',  icon: '📊' },
-  { path: PATHS.REMOTE,        label: 'รีโมทควบคุมอุปกรณ์',    icon: '🎮' },
-  { path: PATHS.SUMMARY,       label: 'สรุปผล',                 icon: '📋' },
-  { path: PATHS.ALERTS,        label: 'ตั้งค่าการแจ้งเตือน',    icon: '🔔' },
-  { path: PATHS.ACCESSIBILITY, label: 'ฟังก์ชันสำหรับผู้พิการ', icon: '♿' },
-  { path: PATHS.AUTHOR,        label: 'เกี่ยวกับผู้พัฒนา',      icon: '👤' },
+  { path: '/',                                          label: 'หน้าหลัก',              icon: '🏠' },
+  { path: 'components/analysis/AnalysisPage',           label: 'วิเคราะห์การใช้ไฟฟ้า',  icon: '📊' },
+  { path: 'components/remote/RemotePage',               label: 'รีโมทควบคุมอุปกรณ์',    icon: '🎮' },
+  { path: 'components/summary/SummaryPage',             label: 'สรุปผล',                 icon: '📋' },
+  { path: 'components/alerts/AlertsPage',               label: 'ตั้งค่าการแจ้งเตือน',    icon: '🔔' },
+  { path: 'components/accessibility/AccessibilityPage', label: 'ฟังก์ชันสำหรับผู้พิการ', icon: '♿' },
+  { path: 'components/author/AuthorPage',               label: 'เกี่ยวกับผู้พัฒนา',      icon: '👤' },
 ]
 
 interface SidebarProps {
@@ -21,7 +20,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
   const { pathname } = useLocation()
 
   const isActive = (path: string) =>
-    path === '/' ? pathname === '/' : pathname.startsWith(path)
+    path === '/' ? pathname === '/' : pathname.startsWith('/' + path)
 
   return (
     <>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { PageHeader } from '../shared/PageHeader'
 import { Toggle } from '../shared/Toggle'
 
+
 type AlertKey = 'daily' | 'monthly' | 'peak' | 'tip' | 'device'
 
 const ALERT_ITEMS: { key: AlertKey; label: string; sub: string }[] = [

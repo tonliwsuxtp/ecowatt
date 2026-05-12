@@ -1,8 +1,6 @@
 import { useNavigate, useOutletContext } from 'react-router-dom'
-import { PATHS } from '../../routes/paths'
 import type { OutletCtx } from '../layout/Layout'
 import { MenuSVG } from '../shared/Icons'
-
 // ---- Icons ----
 const TrendSVG = () => (
   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -66,10 +64,10 @@ function CircularProgress({ percent, color, label }: { percent: number; color: s
 
 // ---- Menu config ----
 const HOME_MENUS: { path: string; lines: string[]; icon: React.ReactNode }[] = [
-  { path: PATHS.ANALYSIS,     lines: ['วิเคราะห์ /', 'จัดการการใช้ไฟฟ้า'], icon: <TrendSVG /> },
-  { path: PATHS.REMOTE,       lines: ['รีโมทควบคุม', 'อุปกรณ์'],          icon: <RemoteSVG /> },
-  { path: PATHS.SUMMARY,      lines: ['สรุปผล'],                           icon: <BarSVG /> },
-  { path: PATHS.ALERTS,       lines: ['ตั้งค่าการแจ้งเตือน'],              icon: <BellSVG /> },
+  { path: 'components/analysis/AnalysisPage',      lines: ['วิเคราะห์ /', 'จัดการการใช้ไฟฟ้า'], icon: <TrendSVG /> },
+  { path: 'components/remote/RemotePage',          lines: ['รีโมทควบคุม', 'อุปกรณ์'],          icon: <RemoteSVG /> },
+  { path: 'components/summary/SummaryPage',        lines: ['สรุปผล'],                           icon: <BarSVG /> },
+  { path: 'components/alerts/AlertsPage',          lines: ['ตั้งค่าการแจ้งเตือน'],              icon: <BellSVG /> },
 ]
 
 export default function HomePage() {
@@ -102,7 +100,7 @@ export default function HomePage() {
         ))}
       </div>
 
-      <button className="card access-card" onClick={() => navigate(PATHS.ACCESSIBILITY)}>
+      <button className="card access-card" onClick={() => navigate('components/accessibility/AccessibilityPage')}>
         <WheelchairSVG />
         <span className="access-label">ฟังก์ชันสำหรับผู้พิการ</span>
       </button>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { PageHeader } from '../shared/PageHeader'
 
+
 type Period = 'day' | 'week' | 'month'
 
 const DATASETS: Record<Period, { data: number[]; labels: string[] }> = {
