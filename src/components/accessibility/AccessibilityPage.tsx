@@ -11,7 +11,7 @@ export default function AccessibilityPage() {
 
   return (
     <div
-      className="max-w-[1150px] mx-auto pt-12 px-[18px] pb-8 md:pt-9 md:px-5 md:pb-5 flex flex-col gap-5"
+      className="flex-1 w-full max-w-[1150px] mx-auto px-5 pt-8 pb-5 flex flex-col gap-5"
       style={{ fontSize: largeText ? fontSize + 2 : fontSize }}
     >
       <PageHeader title="ฟังก์ชันสำหรับผู้พิการ" />

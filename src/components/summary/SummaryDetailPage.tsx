@@ -51,7 +51,7 @@ export default function SummaryDetailPage() {
   useEffect(() => { load() }, [])
 
   return (
-    <div className="max-w-[1150px] mx-auto pt-12 px-[18px] pb-8 md:pt-9 md:px-5 md:pb-5 flex flex-col gap-5">
+    <div className="flex-1 w-full max-w-[1150px] mx-auto px-5 pt-8 pb-5 flex flex-col gap-5">
       <PageHeader title="ข้อมูลเพิ่มเติม" />
 
       <h1 className="text-[26px] font-extrabold text-[#1a2a4a] leading-[1.35]">
@@ -117,7 +117,7 @@ export default function SummaryDetailPage() {
 
       <button
         onClick={() => navigate(-1)}
-        className="w-full py-4 rounded-[14px] border-[1.5px] border-[#d0e4f7] bg-white text-[#1a2a4a] text-[17px] font-semibold cursor-pointer"
+        className="mt-auto w-full py-4 rounded-[14px] border-[1.5px] border-[#d0e4f7] bg-white text-[#1a2a4a] text-[17px] font-semibold cursor-pointer"
       >
         ย้อนกลับ
       </button>

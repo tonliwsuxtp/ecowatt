@@ -57,7 +57,7 @@ export default function AdvicePage() {
   useEffect(() => { load() }, [])
 
   return (
-    <div className="max-w-[1150px] mx-auto pt-12 px-[18px] pb-8 md:pt-9 md:px-5 md:pb-5 flex flex-col gap-5">
+    <div className="flex-1 w-full max-w-[1150px] mx-auto px-5 pt-8 pb-5 flex flex-col gap-5">
       <PageHeader title="คำแนะนำการใช้ไฟฟ้า" showBack />
 
       {loading && (
@@ -123,7 +123,7 @@ export default function AdvicePage() {
         </div>
       </>}
 
-      <div className="flex gap-3">
+      <div className="flex gap-3 mt-auto">
         <button
           onClick={() => navigate(-1)}
           className="flex-1 py-4 rounded-xl border-none bg-[#A8C3D8] text-[#1a2a4a] text-base font-semibold cursor-pointer"

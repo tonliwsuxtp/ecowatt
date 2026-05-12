@@ -22,7 +22,7 @@ export default function AnalysisResultPage() {
   const isInRange = monthlyBudget >= estimatedCost * 0.9
 
   return (
-    <div className="max-w-[1150px] mx-auto pt-12 px-[18px] pb-8 md:pt-9 md:px-5 md:pb-5 flex flex-col gap-5">
+    <div className="flex-1 w-full max-w-[1150px] mx-auto px-5 pt-8 pb-5 flex flex-col gap-5">
       <PageHeader title="สรุปผลการวิเคราะห์ไฟฟ้า" showBack />
 
       <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
@@ -60,7 +60,7 @@ export default function AnalysisResultPage() {
 
       <button
         onClick={() => navigate('/analysis/advice')}
-        className="w-full py-4 rounded-xl border-none bg-gradient-to-br from-[#4A9EE8] to-[#5BC4B5] text-white text-base font-bold cursor-pointer"
+        className="mt-auto w-full py-4 rounded-xl border-none bg-gradient-to-br from-[#4A9EE8] to-[#5BC4B5] text-white text-base font-bold cursor-pointer"
       >
         ยืนยันข้อมูล
       </button>

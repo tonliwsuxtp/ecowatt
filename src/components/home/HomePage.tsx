@@ -3,6 +3,7 @@ import ReactApexChart from 'react-apexcharts'
 import type { ApexOptions } from 'apexcharts'
 import { fetchDashboard, type DashboardData } from '../../api/mockApi'
 import { LoadingSpinner, ErrorState } from '../shared/LoadingSpinner'
+import { PageHeader } from '../shared/PageHeader'
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
@@ -138,7 +139,9 @@ export default function HomePage() {
   useEffect(() => { load() }, [])
 
   return (
-    <div className="max-w-[1150px] mx-auto pt-12 px-[18px] pb-8 md:pt-9 md:px-5 md:pb-5 flex flex-col gap-5">
+    <div className="flex-1 w-full max-w-[1150px] mx-auto px-5 pt-8 pb-5 flex flex-col gap-5">
+
+      <PageHeader title="หน้าหลัก" />
 
       <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] flex flex-col gap-6">
 

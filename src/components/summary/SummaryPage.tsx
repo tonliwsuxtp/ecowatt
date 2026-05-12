@@ -65,7 +65,7 @@ export default function SummaryPage() {
   useEffect(() => { load() }, [])
 
   return (
-    <div className="max-w-[1150px] mx-auto pt-12 px-[18px] pb-8 md:pt-9 md:px-5 md:pb-5 flex flex-col gap-5">
+    <div className="flex-1 w-full max-w-[1150px] mx-auto px-5 pt-8 pb-5 flex flex-col gap-5">
       <PageHeader title="สรุปผล" />
 
       {data && (
@@ -129,7 +129,7 @@ export default function SummaryPage() {
 
       <button
         onClick={() => navigate('/components/summary/SummaryDetailPage')}
-        className="w-full py-4 rounded-[14px] border-none bg-gradient-to-br from-[#4A9EE8] to-[#5BC4B5] text-white text-[17px] font-bold cursor-pointer"
+        className="mt-auto w-full py-4 rounded-[14px] border-none bg-gradient-to-br from-[#4A9EE8] to-[#5BC4B5] text-white text-[17px] font-bold cursor-pointer"
       >
         ดูข้อมูลเพิ่มเติม
       </button>

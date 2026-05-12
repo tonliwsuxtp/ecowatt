@@ -26,7 +26,7 @@ export default function AlertsPage() {
   ]
 
   return (
-    <div className="max-w-[1150px] mx-auto pt-12 px-[18px] pb-8 md:pt-9 md:px-5 md:pb-5 flex flex-col gap-5">
+    <div className="flex-1 w-full max-w-[1150px] mx-auto px-5 pt-8 pb-5 flex flex-col gap-5">
       <PageHeader title="การแจ้งเตือน" showBack />
 
       {/* Notification Mode */}
@@ -99,7 +99,7 @@ export default function AlertsPage() {
       {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
-        className="w-full py-4 rounded-xl border-[1.5px] border-[#3B7DD8] bg-white text-[#1a2a4a] text-[17px] font-bold cursor-pointer transition-colors duration-[150ms] hover:bg-[#f0f6ff]"
+        className="mt-auto w-full py-4 rounded-xl border-[1.5px] border-[#3B7DD8] bg-white text-[#1a2a4a] text-[17px] font-bold cursor-pointer transition-colors duration-[150ms] hover:bg-[#f0f6ff]"
       >
         ย้อนกลับ
       </button>
