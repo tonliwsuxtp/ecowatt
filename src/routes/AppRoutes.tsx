@@ -10,6 +10,7 @@ import RemotePage from '../components/remote/RemotePage'
 import RemoteControlPage from '../components/remote/RemoteControlPage'
 import RemoteScanPage from '../components/remote/RemoteScanPage'
 import SummaryPage from '../components/summary/SummaryPage'
+import SummaryDetailPage from '../components/summary/SummaryDetailPage'
 import AlertsPage from '../components/alerts/AlertsPage'
 import AccessibilityPage from '../components/accessibility/AccessibilityPage'
 import AuthorPage from '../components/author/AuthorPage'
@@ -28,6 +29,7 @@ export function AppRoutes() {
         <Route path="components/remote/RemoteControlPage" element={<RemoteControlPage />} />
         <Route path="components/remote/RemoteScanPage" element={<RemoteScanPage />} />
         <Route path="components/summary/SummaryPage" element={<SummaryPage />} />
+        <Route path="components/summary/SummaryDetailPage" element={<SummaryDetailPage />} />
         <Route path="components/alerts/AlertsPage" element={<AlertsPage />} />
         <Route path="components/accessibility/AccessibilityPage" element={<AccessibilityPage />} />
         <Route path="components/author/AuthorPage" element={<AuthorPage />} />
