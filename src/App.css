@@ -220,6 +220,20 @@ body {
   text-align: center;
 }
 
+/* ---- Dashboard ---- */
+.dashboard-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.dashboard-chart-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a2a4a;
+  margin-bottom: 4px;
+}
+
 /* ---- Menu Grid ---- */
 .menu-grid {
   display: grid;
@@ -619,6 +633,10 @@ body {
   .menu-grid {
     grid-template-columns: 1fr 1fr;
     gap: 12px;
+  }
+
+  .dashboard-row {
+    grid-template-columns: 1fr;
   }
 
   .stats-grid {
