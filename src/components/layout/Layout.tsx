@@ -12,7 +12,9 @@ export function Layout() {
   return (
     <div className="app-shell">
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <Outlet context={{ openMenu: () => setSidebarOpen(true) } satisfies OutletCtx} />
+      <main className="main-content">
+        <Outlet context={{ openMenu: () => setSidebarOpen(true) } satisfies OutletCtx} />
+      </main>
     </div>
   )
 }
