@@ -2,6 +2,8 @@ import { Routes, Route } from 'react-router-dom'
 import { Layout } from '../components/layout/Layout'
 import HomePage from '../components/home/HomePage'
 import AnalysisPage from '../components/analysis/AnalysisPage'
+import AnalysisResultPage from '../components/analysis/AnalysisResultPage'
+import AdvicePage from '../components/analysis/AdvicePage'
 import RemotePage from '../components/remote/RemotePage'
 import SummaryPage from '../components/summary/SummaryPage'
 import AlertsPage from '../components/alerts/AlertsPage'
@@ -14,6 +16,8 @@ export function AppRoutes() {
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="components/analysis/AnalysisPage" element={<AnalysisPage />} />
+        <Route path="analysis/result" element={<AnalysisResultPage />} />
+        <Route path="analysis/advice" element={<AdvicePage />} />
         <Route path="components/remote/RemotePage" element={<RemotePage />} />
         <Route path="components/summary/SummaryPage" element={<SummaryPage />} />
         <Route path="components/alerts/AlertsPage" element={<AlertsPage />} />

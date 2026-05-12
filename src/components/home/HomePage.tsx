@@ -141,11 +141,8 @@ export default function HomePage() {
   return (
     <div className="screen">
       
-
-      {/* Dashboard — single card */}
       <div className="card dashboard-card">
 
-        {/* Radialbar */}
         <div className="progress-row">
           <CircularProgress percent={24} colors={['#4A9EE8', '#87D4F9']} label="วันนี้ใช้ไฟแล้ว" />
           <CircularProgress percent={56} colors={['#5BC4B5', '#A8E6D9']} label="เดือนนี้ใช้ไฟแล้ว" />
@@ -153,7 +150,6 @@ export default function HomePage() {
 
         <div className="dashboard-divider" />
 
-        {/* Quick Stats */}
         <div className="stats-grid">
           {[
             { label: 'วันนี้',     value: '2.4 kWh', sub: '฿ 8.40',          color: '#4A9EE8' },
