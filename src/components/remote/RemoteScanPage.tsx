@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+// หน้าสแกน AR เปิดกล้องหลังพร้อม overlay กรอบเล็ง และหยุด media stream เมื่อออกจากหน้า
 export default function RemoteScanPage() {
   const navigate = useNavigate()
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -32,7 +33,6 @@ export default function RemoteScanPage() {
 
   return (
     <div className="fixed inset-0 bg-black flex flex-col items-center justify-center">
-      {/* Camera feed */}
       <video
         ref={videoRef}
         autoPlay
@@ -41,22 +41,18 @@ export default function RemoteScanPage() {
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[400ms] ${ready ? 'opacity-100' : 'opacity-0'}`}
       />
 
-      {/* Loading */}
       {!ready && !error && (
         <div className="text-white text-base z-10">กำลังเปิดกล้อง...</div>
       )}
 
-      {/* Error */}
       {error && (
         <div className="z-10 text-center text-white px-8 py-6 bg-black/70 rounded-2xl whitespace-pre-line leading-[1.8] text-base">
           {error}
         </div>
       )}
 
-      {/* AR overlay */}
       {ready && (
         <div className="absolute inset-0 z-[5] flex flex-col items-center justify-center pointer-events-none">
-          {/* Corner brackets */}
           {[
             'top-[25%] left-[15%] border-t-[3px] border-l-[3px]',
             'top-[25%] right-[15%] border-t-[3px] border-r-[3px]',
@@ -71,7 +67,6 @@ export default function RemoteScanPage() {
         </div>
       )}
 
-      {/* Header bar */}
       <div className="absolute top-0 left-0 right-0 z-10 flex items-center pt-12 px-5 pb-4 bg-gradient-to-b from-black/55 to-transparent">
         <button
           onClick={handleBack}

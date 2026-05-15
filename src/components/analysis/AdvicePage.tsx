@@ -73,7 +73,6 @@ export default function AdvicePage() {
       )}
 
       {data && <>
-        {/* Pie chart + legend */}
         <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] flex items-center gap-5">
           <PieChart data={data.pieData} />
           <div className="flex flex-col gap-[14px]">
@@ -86,7 +85,6 @@ export default function AdvicePage() {
           </div>
         </div>
 
-        {/* Daily tip */}
         <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
           <p className="font-bold text-base mb-[10px]">รายวัน</p>
           <div className="flex items-center gap-[10px]">
@@ -96,7 +94,6 @@ export default function AdvicePage() {
           </div>
         </div>
 
-        {/* Monthly tip */}
         <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
           <p className="font-bold text-base mb-[10px]">รายเดือน</p>
           <div className="flex items-center gap-[10px]">
@@ -106,7 +103,6 @@ export default function AdvicePage() {
           </div>
         </div>
 
-        {/* Monthly actions */}
         <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] flex flex-col gap-[14px]">
           <p className="font-bold text-base">รายเดือน</p>
           {data.monthlyActions.map(item => (

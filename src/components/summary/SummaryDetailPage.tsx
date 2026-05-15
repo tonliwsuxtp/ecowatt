@@ -4,6 +4,7 @@ import { PageHeader } from '../shared/PageHeader'
 import { fetchSummaryDetail, type SummaryDetailData } from '../../api/mockApi'
 import { LoadingSpinner, ErrorState } from '../shared/LoadingSpinner'
 
+// SVG icon ของเครื่องปรับอากาศ
 const AcIcon = () => (
   <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
     <rect x="2" y="8" width="32" height="16" rx="4" stroke="#2a5298" strokeWidth="2.2" />
@@ -14,6 +15,7 @@ const AcIcon = () => (
   </svg>
 )
 
+// SVG icon ของตู้เย็น
 const FridgeIcon = () => (
   <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
     <rect x="6" y="2" width="24" height="32" rx="4" stroke="#2a5298" strokeWidth="2.2" />
@@ -23,6 +25,7 @@ const FridgeIcon = () => (
   </svg>
 )
 
+// SVG icon ของเครื่องทำน้ำอุ่น
 const HeaterIcon = () => (
   <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
     <rect x="4" y="10" width="28" height="20" rx="4" stroke="#2a5298" strokeWidth="2.2" />
@@ -34,6 +37,7 @@ const HeaterIcon = () => (
 
 const DEVICE_ICONS = [AcIcon, FridgeIcon, HeaterIcon]
 
+// หน้าแสดง Top 3 อุปกรณ์ที่ใช้ไฟมากสุด ช่วงเวลาพีค และคำแนะนำประหยัดพลังงาน
 export default function SummaryDetailPage() {
   const navigate = useNavigate()
   const [data, setData]       = useState<SummaryDetailData | null>(null)

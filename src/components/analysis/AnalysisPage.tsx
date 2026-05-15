@@ -6,14 +6,15 @@ export default function AnalysisPage() {
   const [members, setMembers] = useState('')
   const [monthlyBudget, setMonthlyBudget] = useState('')
   const navigate = useNavigate()
+  const AVG_KWH_PER_PERSON = 2.5
 
   const handleConfirm = () => {
     const n = Math.max(1, Number(members) || 1)
-    navigate('/analysis/result', {
+    navigate('/component/analysis/result', {
       state: {
         members: n,
         monthlyBudget: Number(monthlyBudget) || 0,
-        dailyKwh: Math.round(n * 2.5 * 10) / 10,
+        dailyKwh: Math.round(n * AVG_KWH_PER_PERSON  * 10) / 10,
         monthlyKwh: n * 75,
       },
     })
@@ -41,7 +42,7 @@ export default function AnalysisPage() {
         <p className="text-[#555] text-sm">ผลคำนวณการใช้ไฟฟ้าที่เหมาะสม</p>
 
         <div
-          onClick={() => navigate('/analysis/daily-advice')}
+          onClick={() => navigate('/component/analysis/daily-advice')}
           className="flex items-center gap-4 p-4 bg-[#f0f6ff] rounded-[10px] cursor-pointer"
         >
           <div className="w-12 h-12 rounded-full bg-[#3B7DD8] flex items-center justify-center flex-shrink-0">
@@ -55,7 +56,7 @@ export default function AnalysisPage() {
         </div>
 
         <div
-          onClick={() => navigate('/analysis/monthly-advice')}
+          onClick={() => navigate('/componetnt/analysis/monthly-advice')}
           className="flex items-center gap-4 p-4 bg-[#f0f6ff] rounded-[10px] cursor-pointer"
         >
           <div className="w-12 h-12 rounded-[10px] bg-[#3B7DD8] flex items-center justify-center flex-shrink-0">

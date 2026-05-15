@@ -72,7 +72,6 @@ const ClockIcon = () => (
   </svg>
 )
 
-// แมปชื่ออุปกรณ์ → icon component
 const DEVICE_ICON_MAP: Record<string, React.ComponentType> = {
   'เครื่องปรับอากาศ': AcIcon,
   'ไฟเพดาน':          CeilingLightIcon,
@@ -82,6 +81,7 @@ const DEVICE_ICON_MAP: Record<string, React.ComponentType> = {
   'พัดลม':            FanIcon,
 }
 
+// ปุ่มเลือกห้องแบบ avatar รูปภาพกลม แสดง border highlight เมื่อห้องนั้นถูกเลือก
 function RoomAvatar({ src, label, selected, onClick }: {
   src: string; label: string; selected: boolean; onClick: () => void
 }) {
@@ -97,6 +97,7 @@ function RoomAvatar({ src, label, selected, onClick }: {
   )
 }
 
+// หน้าควบคุมอุปกรณ์ไฟฟ้าในบ้าน เลือกห้องจาก avatar แล้ว toggle เปิด/ปิดอุปกรณ์แต่ละชิ้น
 export default function RemoteControlPage() {
   const navigate = useNavigate()
   const [rooms, setRooms]           = useState<Room[]>([])
@@ -114,6 +115,7 @@ export default function RemoteControlPage() {
 
   useEffect(() => { load() }, [])
 
+  // สลับสถานะ on/off ของอุปกรณ์ตาม deviceId ใน selectedRoom โดยไม่กระทบห้องอื่น
   const toggleDevice = (deviceId: number) => {
     setRooms(prev => prev.map((r, ri) =>
       ri !== selectedRoom ? r : {

@@ -4,6 +4,7 @@ import { PageHeader } from '../shared/PageHeader'
 import { fetchSummary, type SummaryData } from '../../api/mockApi'
 import { LoadingSpinner, ErrorState } from '../shared/LoadingSpinner'
 
+// วาด SVG sparkline area chart จากอาร์เรย์ตัวเลข ใช้แสดงเทรนด์ค่าเฉลี่ยต่อวัน
 function SparklineChart({ data }: { data: number[] }) {
   const w = 120
   const h = 60
@@ -34,6 +35,7 @@ function SparklineChart({ data }: { data: number[] }) {
   )
 }
 
+// วาด SVG bar chart 2 แท่ง เปรียบเทียบค่าไฟเดือนก่อนและเดือนปัจจุบัน
 function MiniBarChart({ prev, curr }: { prev: number; curr: number }) {
   const maxH = 80
   const prevH = Math.round((prev / Math.max(prev, curr)) * maxH)
@@ -48,6 +50,7 @@ function MiniBarChart({ prev, curr }: { prev: number; curr: number }) {
   )
 }
 
+// หน้าสรุปการใช้ไฟรายเดือน แสดงยอดรวม ค่าเฉลี่ยต่อวัน และผลกระทบต่อสิ่งแวดล้อม
 export default function SummaryPage() {
   const navigate = useNavigate()
   const [data, setData]       = useState<SummaryData | null>(null)

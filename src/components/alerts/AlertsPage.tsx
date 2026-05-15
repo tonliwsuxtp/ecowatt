@@ -43,6 +43,7 @@ const SOUND_OPTIONS: { key: SoundOption; label: string; Icon: React.ComponentTyp
   { key: 'apple',   label: 'Apple Music', Icon: AppleMusicIcon },
 ]
 
+// หน้าตั้งค่าการแจ้งเตือน ครอบคลุมโหมดเสียง Push Notification เสียงแจ้งเตือน และเตือนเมื่อใช้ไฟเกินโควต้า
 export default function AlertsPage() {
   const navigate = useNavigate()
   const [soundMode,     setSoundMode]     = useState<SoundMode>('sound')

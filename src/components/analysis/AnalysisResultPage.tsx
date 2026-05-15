@@ -59,7 +59,7 @@ export default function AnalysisResultPage() {
       </div>
 
       <button
-        onClick={() => navigate('/analysis/advice')}
+        onClick={() => navigate('/component/analysis/advice')}
         className="mt-auto w-full py-4 rounded-xl border-none bg-gradient-to-br from-[#4A9EE8] to-[#5BC4B5] text-white text-base font-bold cursor-pointer"
       >
         ยืนยันข้อมูล

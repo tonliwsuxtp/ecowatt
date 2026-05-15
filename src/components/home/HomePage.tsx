@@ -5,6 +5,7 @@ import { fetchDashboard, type DashboardData } from '../../api/mockApi'
 import { LoadingSpinner, ErrorState } from '../shared/LoadingSpinner'
 import { PageHeader } from '../shared/PageHeader'
 
+// ตรวจสอบและติดตามว่า viewport กว้างน้อยกว่า 768px หรือไม่ สำหรับ responsive layout
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
   useEffect(() => {
@@ -149,7 +150,7 @@ export default function HomePage() {
         {error   && <ErrorState message={error} onRetry={load} />}
 
         {data && <>
-          {/* Circular progress */}
+          
           <div className="flex justify-around md:justify-center gap-4 md:gap-16 items-start py-2">
             <CircularProgress percent={data.dailyPct}   colors={['#4A9EE8', '#87D4F9']} label="วันนี้ใช้ไฟแล้ว" />
             <CircularProgress percent={data.monthlyPct} colors={['#5BC4B5', '#A8E6D9']} label="เดือนนี้ใช้ไฟแล้ว" />
@@ -170,7 +171,7 @@ export default function HomePage() {
 
           <hr className="border-0 border-t border-[#f0f4f8]" />
 
-          {/* Charts Row 1 */}
+          
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="min-w-0 pb-5 border-b border-[#f0f4f8] md:pb-0 md:pr-4 md:border-b-0 md:border-r md:border-[#f0f4f8]">
               <p className="text-[15px] font-bold text-[#1a2a4a] mb-1">📊 การใช้ไฟรายสัปดาห์</p>
@@ -184,7 +185,7 @@ export default function HomePage() {
 
           <hr className="border-0 border-t border-[#f0f4f8]" />
 
-          {/* Charts Row 2 */}
+          
           <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="min-w-0 pb-5 border-b border-[#f0f4f8] md:pb-0 md:pr-4 md:border-b-0 md:border-r md:border-[#f0f4f8]">
               <p className="text-[15px] font-bold text-[#1a2a4a] mb-1">📋 แนวโน้มรายเดือน</p>

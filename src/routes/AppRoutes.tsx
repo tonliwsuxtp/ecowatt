@@ -20,10 +20,10 @@ export function AppRoutes() {
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="components/analysis/AnalysisPage" element={<AnalysisPage />} />
-        <Route path="analysis/result" element={<AnalysisResultPage />} />
-        <Route path="analysis/advice" element={<AdvicePage />} />
-        <Route path="analysis/daily-advice" element={<DailyAdvicePage />} />
-        <Route path="analysis/monthly-advice" element={<MonthlyAdvicePage />} />
+        <Route path="component/analysis/result" element={<AnalysisResultPage />} />
+        <Route path="component/analysis/advice" element={<AdvicePage />} />
+        <Route path="component/analysis/daily-advice" element={<DailyAdvicePage />} />
+        <Route path="component/analysis/monthly-advice" element={<MonthlyAdvicePage />} />
         <Route path="components/remote/RemotePage" element={<RemotePage />} />
         <Route path="components/remote/RemoteControlPage" element={<RemoteControlPage />} />
         <Route path="components/remote/RemoteScanPage" element={<RemoteScanPage />} />
