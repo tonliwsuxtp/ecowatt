@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { PageHeader } from '../shared/PageHeader'
 import { Toggle } from '../shared/Toggle'
 
-// หน้าตั้งค่าการเข้าถึง ปรับขนาดตัวอักษร คอนทราสต์สูง อ่านออกเสียง และการสั่นแจ้งเตือน
 export default function AccessibilityPage() {
   const [largeText,    setLargeText]    = useState(false)
   const [highContrast, setHighContrast] = useState(false)

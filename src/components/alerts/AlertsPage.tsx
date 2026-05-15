@@ -43,7 +43,6 @@ const SOUND_OPTIONS: { key: SoundOption; label: string; Icon: React.ComponentTyp
   { key: 'apple',   label: 'Apple Music', Icon: AppleMusicIcon },
 ]
 
-// หน้าตั้งค่าการแจ้งเตือน ครอบคลุมโหมดเสียง Push Notification เสียงแจ้งเตือน และเตือนเมื่อใช้ไฟเกินโควต้า
 export default function AlertsPage() {
   const navigate = useNavigate()
   const [soundMode,     setSoundMode]     = useState<SoundMode>('sound')
@@ -61,7 +60,6 @@ export default function AlertsPage() {
     <div className="flex-1 w-full max-w-[1150px] mx-auto px-5 pt-8 pb-5 flex flex-col gap-5">
       <PageHeader title="การแจ้งเตือน" showBack />
 
-      {/* Notification Mode */}
       <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
         <h3 className="text-[15px] font-bold text-[#333] mb-3">โหมดแจ้งเตือน</h3>
         <div className="flex gap-[10px]">
@@ -81,7 +79,6 @@ export default function AlertsPage() {
         </div>
       </div>
 
-      {/* Notification via Push */}
       <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
         <h3 className="text-[15px] font-bold text-[#333] mb-3">การแจ้งเตือน</h3>
         <div className="flex items-center gap-3">
@@ -90,7 +87,6 @@ export default function AlertsPage() {
         </div>
       </div>
 
-      {/* Select Notification Sound */}
       <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
         <h3 className="text-[15px] font-bold text-[#333] mb-3">เลือกเสียงแจ้งเตือน</h3>
         <div className="flex flex-col gap-1">
@@ -114,7 +110,6 @@ export default function AlertsPage() {
         </div>
       </div>
 
-      {/* Limit / Exceeded Alert */}
       <div className="bg-white rounded-[10px] p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
         <div className="flex items-center gap-3">
           <span className="text-sm font-semibold text-[#222] flex-1 leading-relaxed">
@@ -125,7 +120,6 @@ export default function AlertsPage() {
         </div>
       </div>
 
-      {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
         className="mt-auto w-full py-4 rounded-xl border-[1.5px] border-[#3B7DD8] bg-white text-[#1a2a4a] text-[17px] font-bold cursor-pointer transition-colors duration-[150ms] hover:bg-[#f0f6ff]"

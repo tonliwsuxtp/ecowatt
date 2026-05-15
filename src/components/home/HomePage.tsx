@@ -5,7 +5,6 @@ import { fetchDashboard, type DashboardData } from '../../api/mockApi'
 import { LoadingSpinner, ErrorState } from '../shared/LoadingSpinner'
 import { PageHeader } from '../shared/PageHeader'
 
-// ตรวจสอบและติดตามว่า viewport กว้างน้อยกว่า 768px หรือไม่ สำหรับ responsive layout
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
   useEffect(() => {
@@ -158,7 +157,6 @@ export default function HomePage() {
 
           <hr className="border-0 border-t border-[#f0f4f8]" />
 
-          {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {data.stats.map(s => (
               <div key={s.label} className="text-center py-4 px-2 bg-[#f8fbff] rounded-xl">

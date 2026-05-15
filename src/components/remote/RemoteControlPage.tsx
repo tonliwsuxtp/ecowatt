@@ -81,7 +81,6 @@ const DEVICE_ICON_MAP: Record<string, React.ComponentType> = {
   'พัดลม':            FanIcon,
 }
 
-// ปุ่มเลือกห้องแบบ avatar รูปภาพกลม แสดง border highlight เมื่อห้องนั้นถูกเลือก
 function RoomAvatar({ src, label, selected, onClick }: {
   src: string; label: string; selected: boolean; onClick: () => void
 }) {
@@ -97,7 +96,6 @@ function RoomAvatar({ src, label, selected, onClick }: {
   )
 }
 
-// หน้าควบคุมอุปกรณ์ไฟฟ้าในบ้าน เลือกห้องจาก avatar แล้ว toggle เปิด/ปิดอุปกรณ์แต่ละชิ้น
 export default function RemoteControlPage() {
   const navigate = useNavigate()
   const [rooms, setRooms]           = useState<Room[]>([])
@@ -115,7 +113,6 @@ export default function RemoteControlPage() {
 
   useEffect(() => { load() }, [])
 
-  // สลับสถานะ on/off ของอุปกรณ์ตาม deviceId ใน selectedRoom โดยไม่กระทบห้องอื่น
   const toggleDevice = (deviceId: number) => {
     setRooms(prev => prev.map((r, ri) =>
       ri !== selectedRoom ? r : {
@@ -130,7 +127,6 @@ export default function RemoteControlPage() {
   return (
     <div className="min-h-screen bg-[#C9E3F5] flex flex-col gap-5 px-5 pt-9 pb-5 max-w-[480px] mx-auto">
 
-      {/* Header */}
       <div className="flex items-center gap-[14px]">
         <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 bg-[#b8d8f5] border-2 border-white">
           <img
@@ -155,7 +151,6 @@ export default function RemoteControlPage() {
       )}
 
       {!loading && !error && rooms.length > 0 && <>
-        {/* Room selector */}
         <div className="bg-white rounded-[20px] px-3 py-4 flex gap-3 justify-around shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
           {rooms.map((room, idx) => (
             <RoomAvatar
@@ -168,7 +163,6 @@ export default function RemoteControlPage() {
           ))}
         </div>
 
-        {/* Device list */}
         <div className="bg-white rounded-[20px] px-4 py-2 flex flex-col shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
           {currentDevices.map((device, idx) => {
             const Icon = DEVICE_ICON_MAP[device.name] ?? PlugIcon
@@ -191,7 +185,6 @@ export default function RemoteControlPage() {
         </div>
       </>}
 
-      {/* Back button */}
       <button
         onClick={() => navigate(-1)}
         className="w-full py-4 bg-white border-2 border-[#d0e4f5] rounded-2xl text-[17px] font-bold text-[#1a2a4a] cursor-pointer mt-auto"
